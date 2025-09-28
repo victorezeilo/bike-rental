@@ -1,0 +1,18 @@
+{
+  "name": "bike-rental",
+  "private": true,
+  "type": "module",
+  "workspaces": ["server", "app/admin", "app/rider"],
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "test:server": "npm --prefix server test",
+    "seed": "npm --prefix server run seed",
+    "lint": "eslint .",
+    "format": "prettier -w ."
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3"
+  }
+}
