@@ -11,7 +11,7 @@ const RegisterSchema = z.object({
 
 export async function register(req, res, next) {
     try {
-        const { email, password } = RegisterSchema(req.body);
+        const { email, password } = RegisterSchema.parse(req.body);
         const exists = await User.findOne({ where: { email } });
         if (exists)
             return res.status(409).json({ error: { code: "EMAIL_TAKEN", message: "Email in use" } });

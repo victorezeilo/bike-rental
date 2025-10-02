@@ -6,6 +6,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import { catalogRouter } from "./routes/catalog.routes.js";
 import { adminRouter } from "./routes/admin.routes.js";
 import { errorHandler } from "./middleware/error.js";
+import { rentalsRouter } from "./routes/rentals.routes.js";
 
 const app = express();
 app.use(helmet());
@@ -25,7 +26,7 @@ app.get("/api/v1/health", async (_req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1", catalogRouter);         // /bikes, /helmets
 app.use("/api/v1/admin", adminRouter);     // admin-only
-
+app.use("/api/v1/rentals", rentalsRouter);
 app.use(errorHandler);
 
 export { app };

@@ -4,6 +4,8 @@ import { Helmet } from "../models/Helmet.js";
 import { BikeType } from "../models/lookups/BikeType.js";
 import { BikeSize } from "../models/lookups/BikeSize.js";
 import { HelmetSize } from "../models/lookups/HelmetSize.js";
+import { Rental } from "../models/Rental.js";
+import { User } from "../models/User.js";
 
 const CreateBikeSchema = z.object({
   typeCode: z.enum(["city", "mountain", "electric"]),
@@ -45,6 +47,28 @@ export async function createHelmet(req, res, next) {
 
     const helmet = await Helmet.create({ sizeId: size.id });
     res.status(201).json(helmet);
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function listAllRentals(req, res, next) {
+  try {
+    const limit = Math.min(Number(req.query.limit) || 50, 200);
+    const offset = Number(req.query.offset) || 0;
+
+    const rentals = await Rental.findAll({
+      include: [
+        { model: User, as: "user", attributes: ["id", "email", "role"] },
+        { model: Bike, as: "bike", attributes: ["id", "status", "isElectric", "batteryPct"] },
+        { model: Helmet, as: "helmet", attributes: ["id", "status"] }
+      ],
+      order: [["createdAt", "DESC"]],
+      limit,
+      offset
+    });
+
+    res.json(rentals);
   } catch (e) {
     next(e);
   }
